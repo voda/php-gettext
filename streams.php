@@ -103,11 +103,13 @@ class FileReader {
   }
 
   function read($bytes) {
-    fseek($this->_fd, $this->_pos);
-    $data = fread($this->_fd, $bytes);
-    $this->_pos = ftell($this->_fd);
-
-    return $data;
+    if ($bytes) {
+      fseek($this->_fd, $this->_pos);
+      $data = fread($this->_fd, $bytes);
+      $this->_pos = ftell($this->_fd);
+      
+      return $data;
+    } else return '';
   }
 
   function seekto($pos) {

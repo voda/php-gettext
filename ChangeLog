@@ -1,5 +1,16 @@
 2005-02-28  Danilo Šegan  <dsegan@gmx.net>
 
+	* gettext.php: Added pre-loading, code documentation, and many
+	code clean-ups by Nico Kaiser <nico@siriux.net>.
+
+2005-02-28  Danilo Šegan  <dsegan@gmx.net>
+
+	* streams.php (FileReader.read): Handle read($bytes = 0).
+
+	* examples/pigs.php: Prefix gettext function names with T or T_.
+
+	* examples/update: Use the same keywords T_ and T_ngettext.
+
 	* streams.php: Added CachedFileReader.
 
 2003-11-11  Danilo Šegan  <dsegan@gmx.net>

@@ -50,10 +50,11 @@ Features
     file data, I used imaginary abstract class StreamReader to do all
     the input (check streams.php). For your convenience, I've already
     provided two classes for reading files: FileReader and
-    StringReader. See example below for usage. You can for instance
-    use StringReader when you read in data from a database, or you
-    can create your own derivative of StreamReader for anything you
-    like. 
+    StringReader (CachedFileReader is a combination of the two: it 
+    loads entire file contents into a string, and then works on that). 
+    See example below for usage. You can for instance use StringReader 
+    when you read in data from a database, or you can create your own 
+    derivative of StreamReader for anything you like. 
     
 
 Bugs
@@ -78,7 +79,7 @@ Bugs
     Besides this one, there are probably a bunch of other bugs, since
     I hate PHP (did I mention it already? no? strange), and don't
     know it very well. So, feel free to fix any of those and report
-    them back to me at <danilo UHM kvota LOVELY net>.
+    them back to me at <danilo@kvota.net>.
 
 Usage
 
@@ -92,6 +93,12 @@ Usage
 
     Then, use that as a parameter to gettext_reader constructor:
       $wohoo = new gettext_reader($streamer);
+
+    If you want to disable pre-loading of entire message catalog in 
+    memory (if, for example, you have a multi-thousand message catalog 
+    which you'll use only occasionally), use "false" for second 
+    parameter to gettext_reader constructor:
+      $wohoo = new gettext_reader($streamer, false);
 
     From now on, you have all the benefits of gettext data at your
     disposal, so may run: 
@@ -130,7 +137,12 @@ Boring TODO:
 
   o Learn PHP and fix bugs, slowness and other stuff resulting from
     my lack of knowledge (but *maybe*, it's not my knowledge that is
-    bad, but PHP itself ;-).
+    bad, but PHP itself ;-).  
+
+    (This is mostly done thanks to Nico Kaiser.)
+
+  o Try to use hash tables in MO files: with pre-loading, would it 
+    be useful at all?
 
 Never-asked-questions:
 

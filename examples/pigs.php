@@ -26,19 +26,19 @@ $input = new FileReader('serbian.mo');
 $l10n = new gettext_reader($input);
 
 // create standard wrapers, so xgettext could work
-function _($text) {
+function T_($text) {
   global $l10n;
   return $l10n->translate($text);
 }
 
-function ngettext($single, $plural, $number) {
+function T_ngettext($single, $plural, $number) {
   global $l10n;
   return $l10n->ngettext($single, $plural, $number);
 }
     
-print _("This is how the story goes.\n\n");
+print T_("This is how the story goes.\n\n");
 for ($number=6; $number>=0; $number--) {
-  print sprintf( ngettext("%d pig went to the market\n", 
+  print sprintf( T_ngettext("%d pig went to the market\n", 
 			  "%d pigs went to the market\n", $number), 
 		 $number );
 }
