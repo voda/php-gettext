@@ -1,3 +1,7 @@
+2003-11-11  Danilo Šegan  <dsegan@gmx.net>
+
+	* gettext.php: Added hashing to find_string.
+
 2003-11-01  Danilo Šegan  <dsegan@gmx.net>
 
 	* Makefile (DIST_FILES): Replaced LICENSE with COPYING.

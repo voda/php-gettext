@@ -72,6 +72,8 @@ class gettext_reader {
     $this->originals = $originals;
     $this->translations = $translations;
 
+    // Here we store already found translations
+    $this->_HASHED = array();
   }
 
   function load_tables($translations=false) {
@@ -126,12 +128,16 @@ class gettext_reader {
   // binary search for string
   function find_string($string, $start,$end) {
     //print "start: $start, end: $end\n";
+    // Simple hashing to improve speed
+    if (isset($this->_HASHED[$string])) return $this->_HASHED[$string];
+
     if (abs($start-$end)<=1) {
       // we're done, if it's not it, bye bye
       $txt = $this->get_string_number($start);
-      if ($string == $txt)
+      if ($string == $txt) {
+	$this->_HASHED[$string] = $start;
 	return $start;
-      else
+      } else
 	return -1;
     } elseif ($start>$end) {
       return $this->find_string($string,$end,$start);
@@ -139,9 +145,10 @@ class gettext_reader {
       $half = (int)(($start+$end)/2);
       $tst = $this->get_string_number($half);
       $cmp = strcmp($string,$tst);
-      if ($cmp == 0) 
+      if ($cmp == 0) {
+	$this->_HASHED[$string] = $half;
 	return $half;
-      elseif ($cmp<0) 
+      } elseif ($cmp<0) 
 	return $this->find_string($string,$start,$half);
       else
 	return $this->find_string($string,$half,$end);
