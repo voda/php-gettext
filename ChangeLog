@@ -1,5 +1,13 @@
 2005-02-28  Danilo Šegan  <dsegan@gmx.net>
 
+	* AUTHORS: Added Nico to the list.
+
+	* Makefile (VERSION): Up to 1.0.3.
+
+	* README: Updated.
+
+2005-02-28  Danilo Šegan  <dsegan@gmx.net>
+
 	* gettext.php: Added pre-loading, code documentation, and many
 	code clean-ups by Nico Kaiser <nico@siriux.net>.
 

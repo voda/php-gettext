@@ -1,5 +1,5 @@
 PACKAGE = php-gettext-$(VERSION)
-VERSION = 1.0.2
+VERSION = 1.0.3
 
 DIST_FILES = \
 	gettext.php \
