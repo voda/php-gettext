@@ -1,5 +1,9 @@
 2005-07-29  Danilo Šegan  <danilo@gnome.org>
 
+	* Makefile (VERSION): Up to 1.0.4.
+
+2005-07-29  Danilo Šegan  <danilo@gnome.org>
+
 	Fixes bug #13771.
 
 	* gettext.php (gettext_reader->get_plural_forms): Plural forms
