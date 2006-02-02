@@ -1,5 +1,12 @@
 2006-02-02  Danilo Šegan  <danilo@gnome.org>
 
+	Fix bug #12192.
+
+	* examples/locale/sr_CS/LC_MESSAGES/messages.po: Correct grammar.
+	* examples/locale/sr_CS/LC_MESSAGES/messages.mo: Rebuild.
+
+2006-02-02  Danilo Šegan  <danilo@gnome.org>
+
 	Fix bug #15419.
 	
 	* streams.php: Support for PHP 5.1.1 fread() which reads most 8kb.
