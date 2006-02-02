@@ -1,5 +1,12 @@
 2006-02-02  Danilo Šegan  <danilo@gnome.org>
 
+	Fix bug #15419.
+	
+	* streams.php: Support for PHP 5.1.1 fread() which reads most 8kb.
+	(Thanks to Shot on Savannah)
+
+2006-02-02  Danilo Šegan  <danilo@gnome.org>
+
 	Merge Steven Armstrong's changes, supporting standard gettext
 	interfaces: 
 
