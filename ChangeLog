@@ -1,3 +1,17 @@
+2006-02-02  Danilo Šegan  <danilo@gnome.org>
+
+	Merge Steven Armstrong's changes, supporting standard gettext
+	interfaces: 
+
+	* examples/*: Restructured examples.
+	* gettext.inc: Added.
+	* AUTHORS: Added Steven.
+	* Makefile (VERSION): Up to 1.0.6.
+	
+2006-01-28  Nico Kaiser  <nico@siriux.net>
+
+	* gettext.php (select_string): Fix "true" <-> 1 difference of PHP
+
 2005-07-29  Danilo Šegan  <danilo@gnome.org>
 
 	* Makefile (VERSION): Up to 1.0.5.
