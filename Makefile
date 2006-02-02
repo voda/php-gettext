@@ -12,8 +12,8 @@ DIST_FILES = \
 	examples/index.php    \
 	examples/pigs_dropin.php    \
 	examples/pigs_fallback.php    \
-	examples/locale/sr_YU/LC_MESSAGES/messages.po \
-	examples/locale/sr_YU/LC_MESSAGES/messages.mo \
+	examples/locale/sr_CS/LC_MESSAGES/messages.po \
+	examples/locale/sr_CS/LC_MESSAGES/messages.mo \
 	examples/locale/de_CH/LC_MESSAGES/messages.po \
 	examples/locale/de_CH/LC_MESSAGES/messages.mo \
 	examples/update
