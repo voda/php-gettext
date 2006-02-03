@@ -35,7 +35,7 @@ $locale = (isset($_GET['lang']))? $_GET['lang'] : DEFAULT_LOCALE;
 
 // gettext setup
 putenv("LANG=$locale");
-setlocale(LC_MESSAGES, $locale);
+T_setlocale(LC_MESSAGES, $locale);
 // Set the text domain as 'messages'
 $domain = 'messages';
 bindtextdomain($domain, LOCALE_DIR);
@@ -58,7 +58,7 @@ foreach($supported_locales as $l) {
 }
 print "</p>\n";
 
-if (setlocale(LC_MESSAGES, '')) {
+if (!locale_emulation()) {
 	print "<p>locale '$locale' is supported by your system, using native gettext implementation.</p>\n";
 }
 else {
@@ -73,7 +73,7 @@ else {
 print "<pre>";
 print _("This is how the story goes.\n\n");
 for ($number=6; $number>=0; $number--) {
-  print sprintf(_ngettext("%d pig went to the market\n", 
+  print sprintf(T_ngettext("%d pig went to the market\n", 
 			  "%d pigs went to the market\n", $number), 
 		 $number );
 }

@@ -1,3 +1,17 @@
+2006-02-03  Danilo Šegan  <danilo@gnome.org>
+
+	Added setlocale() emulation as well.
+	
+	* examples/pigs_dropin.php: Use T_setlocale() and locale_emulation().
+	* examples/pigs_fallback.php: Use T_setlocale() and locale_emulation().
+
+	* gettext.inc: 	Added globals $EMULATEGETTEXT and $CURRENTLOCALE.
+	(locale_emulation): Whether emulation is active.
+	(_check_locale): Rewrite.
+	(_setlocale): Added emulated setlocale function.
+	(T_setlocale): Wrapper around _setlocale.
+	(_get_reader): Use variables and _setlocale.
+
 2006-02-02  Danilo Šegan  <danilo@gnome.org>
 
 	Fix bug #12192.

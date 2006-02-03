@@ -37,11 +37,12 @@ require('gettext.php');
 
 // Variables
 
-global $text_domains, $default_domain, $LC_CATEGORIES;
+global $text_domains, $default_domain, $LC_CATEGORIES, $EMULATEGETTEXT, $CURRENTLOCALE;
 $text_domains = array();
 $default_domain = 'messages';
 $LC_CATEGORIES = array('LC_CTYPE', 'LC_NUMERIC', 'LC_TIME', 'LC_COLLATE', 'LC_MONETARY', 'LC_MESSAGES', 'LC_ALL');
-
+$EMULATEGETTEXT = 0;
+$CURRENTLOCALE = '';
 
 
 // Utility functions
@@ -54,8 +55,7 @@ function _get_reader($domain=null, $category=5, $enable_cache=true) {
 	if (!isset($domain)) $domain = $default_domain;
 	if (!isset($text_domains[$domain]->l10n)) {
 		// get the current locale
-		//$locale = setlocale(LC_MESSAGES, '');
-		$locale = getenv('LANG');
+		$locale = _setlocale(LC_MESSAGES, 0);
 		$p = isset($text_domains[$domain]->path) ? $text_domains[$domain]->path : './';
 		$path = $p . "$locale/". $LC_CATEGORIES[$category] ."/$domain.mo";
 		if (file_exists($path)) {
@@ -70,11 +70,19 @@ function _get_reader($domain=null, $category=5, $enable_cache=true) {
 }
 
 /**
+ * Returns whether we are using our emulated gettext API or PHP built-in one.
+ */
+function locale_emulation() {
+    global $EMULATEGETTEXT;
+    return $EMULATEGETTEXT;
+}
+
+/**
  * Checks if the current locale is supported on this system.
  */
 function _check_locale() {
-	//return (setlocale(LC_MESSAGES, '') == getenv('LANG'));
-	return setlocale(LC_MESSAGES, '');
+    global $EMULATEGETTEXT;
+    return !$EMULATEGETTEXT;
 }
 
 /**
@@ -104,6 +112,36 @@ function _encode($text) {
 
 
 // Custom implementation of the standard gettext related functions
+
+/**
+ * Sets a requested locale, if needed emulates it.
+ */
+function _setlocale($category, $locale) {
+    global $CURRENTLOCALE, $EMULATEGETTEXT;
+    if ($locale === 0) { // use === to differentiate between string "0"
+        if ($CURRENTLOCALE != '') 
+            return $CURRENTLOCALE;
+        else 
+            // obey LANG variable, maybe extend to support all of LC_* vars
+            // even if we tried to read locale without setting it first
+            return _setlocale($category, $CURRENTLOCALE);
+    } else {
+        $ret = 0;
+        if (function_exists('setlocale')) // I don't know if this ever happens ;)
+           $ret = setlocale($category, $locale);
+        if (($ret and $locale == '') or ($ret == $locale)) {
+            $EMULATEGETTEXT = 0;
+            $CURRENTLOCALE = $ret;
+        } else {
+  	    if ($locale == '') // emulate variable support
+ 	        $CURRENTLOCALE = getenv('LANG');
+	    else
+	        $CURRENTLOCALE = $locale;
+            $EMULATEGETTEXT = 1;
+        }
+        return $CURRENTLOCALE;
+    }
+}
 
 /**
  * Sets the path for a domain.
@@ -193,6 +231,10 @@ function _dcngettext($domain, $single, $plural, $number, $category) {
 
 // Wrappers to use if the standard gettext functions are available, but the current locale is not supported by the system.
 // Use the standard impl if the current locale is supported, use the custom impl otherwise.
+
+function T_setlocale($category, $locale) {
+    return _setlocale($category, $locale);
+}
 
 function T_bindtextdomain($domain, $path) {
 	if (_check_locale()) return bindtextdomain($domain, $path);

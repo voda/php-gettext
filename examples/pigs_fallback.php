@@ -34,8 +34,7 @@ $encoding = 'UTF-8';
 $locale = (isset($_GET['lang']))? $_GET['lang'] : DEFAULT_LOCALE;
 
 // gettext setup
-putenv("LANG=$locale");
-setlocale(LC_MESSAGES, $locale);
+T_setlocale(LC_MESSAGES, $locale);
 // Set the text domain as 'messages'
 $domain = 'messages';
 T_bindtextdomain($domain, LOCALE_DIR);
@@ -59,7 +58,7 @@ foreach($supported_locales as $l) {
 }
 print "</p>\n";
 
-if (setlocale(LC_MESSAGES, '')) {
+if (!locale_emulation()) {
 	print "<p>locale '$locale' is supported by your system, using native gettext implementation.</p>\n";
 }
 else {
