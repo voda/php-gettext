@@ -1,3 +1,13 @@
+2006-02-07  Danilo Šegan  <danilo@gnome.org>
+
+	* examples/pigs_dropin.php: comment-out bind_textdomain_codeset
+
+	* gettext.inc (T_bind_textdomain_codeset): bind_textdomain_codeset
+	is available only in PHP 4.2.0+ (thanks to Jens A. Tkotz).
+
+	* Makefile: Include gettext.inc in DIST_FILES, VERSION up to
+	1.0.7.
+
 2006-02-03  Danilo Šegan  <danilo@gnome.org>
 
 	Added setlocale() emulation as well.

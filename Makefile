@@ -1,8 +1,9 @@
 PACKAGE = php-gettext-$(VERSION)
-VERSION = 1.0.6
+VERSION = 1.0.7
 
 DIST_FILES = \
 	gettext.php \
+	gettext.inc \
 	streams.php \
 	AUTHORS     \
 	ChangeLog   \

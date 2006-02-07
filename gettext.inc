@@ -241,7 +241,8 @@ function T_bindtextdomain($domain, $path) {
 	else return _bindtextdomain($domain, $path);
 }
 function T_bind_textdomain_codeset($domain, $codeset) {
-	if (_check_locale()) return bind_textdomain_codeset($domain, $codeset);
+    // bind_textdomain_codeset is available only in PHP 4.2.0+
+	if (_check_locale() and function_exists('bind_textdomain_codeset')) return bind_textdomain_codeset($domain, $codeset);
 	else return _bind_textdomain_codeset($domain, $codeset);
 }
 function T_textdomain($domain) {
