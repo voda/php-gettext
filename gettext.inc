@@ -148,9 +148,14 @@ function _setlocale($category, $locale) {
  */
 function _bindtextdomain($domain, $path) {
 	global $text_domains;
-	// ensure $path ends with a slash
-	if ($path[strlen($path) - 1] != '/') $path .= '/';
-	elseif ($path[strlen($path) - 1] != '\\') $path .= '\\';
+	// ensure $path ends with a slash ('/' should work for both, but lets still play nice)
+	if (substr(php_uname(), 0, 7) == "Windows") { 
+	  if ($path[strlen($path)-1] != '\\' and $path[strlen($path)-1] != '/') 
+	    $path .= '\\';
+	} else { 
+	  if ($path[strlen($path)-1] != '/') 
+	    $path .= '/';
+	}
 	$text_domains[$domain]->path = $path;
 }
 
