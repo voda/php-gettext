@@ -70,6 +70,10 @@ class gettext_reader {
       }
     }
 
+  function read($bytes) {
+    return $this->STREAM->read($bytes);
+  }
+
   /**
    * Reads an array of Integers from the Stream
    * 
@@ -98,26 +102,24 @@ class gettext_reader {
       $this->short_circuit = true;
       return;
     }
-    
+
     // Caching can be turned off
     $this->enable_cache = $enable_cache;
 
-    // $MAGIC1 = (int)0x950412de; //bug in PHP 5.0.2, see https://savannah.nongnu.org/bugs/?func=detailitem&item_id=10565
-    $MAGIC1 = (int) - 1794895138;
-    // $MAGIC2 = (int)0xde120495; //bug
-    $MAGIC2 = (int) - 569244523;
+    $MAGIC1 = "\x95\x04\x12\xde";
+    $MAGIC2 = "\xde\x12\x04\x95";
 
     $this->STREAM = $Reader;
-    $magic = $this->readint();
-    if ($magic == ($MAGIC1 & 0xFFFFFFFF)) { // to make sure it works for 64-bit platforms
-      $this->BYTEORDER = 0;
-    } elseif ($magic == ($MAGIC2 & 0xFFFFFFFF)) {
+    $magic = $this->read(4);
+    if ($magic == $MAGIC1) {
       $this->BYTEORDER = 1;
+    } elseif ($magic == $MAGIC2) {
+      $this->BYTEORDER = 0;
     } else {
       $this->error = 1; // not MO file
       return false;
     }
-    
+
     // FIXME: Do we care about revision? We should.
     $revision = $this->readint();
     
