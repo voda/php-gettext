@@ -1,12 +1,11 @@
 PACKAGE = php-gettext-$(VERSION)
-VERSION = 1.0.7
+VERSION = 1.0.8
 
 DIST_FILES = \
 	gettext.php \
 	gettext.inc \
 	streams.php \
 	AUTHORS     \
-	ChangeLog   \
 	README      \
 	COPYING     \
 	Makefile    \
