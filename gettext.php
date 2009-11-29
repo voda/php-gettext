@@ -264,6 +264,41 @@ class gettext_reader {
   }
 
   /**
+   * Sanitize plural form expression for use in PHP eval call.
+   *
+   * @access private
+   * @return string sanitized plural form expression
+   */
+  function sanitize_plural_expression($expr) {
+    // Get rid of disallowed characters.
+    $expr = preg_replace('@[^a-zA-Z0-9_:;\(\)\?\|\&=!<>+*/\%-]@', '', $expr);
+
+    // Add parenthesis for tertiary '?' operator.
+    $expr .= ';';
+    $res = '';
+    $p = 0;
+    for ($i = 0; $i < strlen($expr); $i++) {
+      $ch = $expr[$i];
+      switch ($ch) {
+      case '?':
+        $res .= ' ? (';
+        $p++;
+        break;
+      case ':':
+        $res .= ') : (';
+        break;
+      case ';':
+        $res .= str_repeat( ')', $p) . ';';
+        $p = 0;
+        break;
+      default:
+        $res .= $ch;
+      }
+    }
+    return $res;
+  }
+
+  /**
    * Get possible plural forms from MO header
    *
    * @access private
@@ -285,7 +320,8 @@ class gettext_reader {
         $expr = $regs[1];
       else
         $expr = "nplurals=2; plural=n == 1 ? 0 : 1;";
-      $this->pluralheader = $expr;
+
+      $this->pluralheader = $this->sanitize_plural_expression($expr);
     }
     return $this->pluralheader;
   }
