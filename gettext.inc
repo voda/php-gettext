@@ -63,15 +63,41 @@ function _get_reader($domain=null, $category=5, $enable_cache=true) {
     if (!isset($text_domains[$domain]->l10n)) {
         // get the current locale
         $locale = _setlocale(LC_MESSAGES, 0);
-        $p = isset($text_domains[$domain]->path) ? $text_domains[$domain]->path : './';
-        $path = $p . "$locale/". $LC_CATEGORIES[$category] ."/$domain.mo";
-        if (file_exists($path)) {
-            $input = new FileReader($path);
+        $bound_path = isset($text_domains[$domain]->path) ?
+          $text_domains[$domain]->path : './';
+        $subpath = $LC_CATEGORIES[$category] ."/$domain.mo";
+        /* Figure out all possible locale names and start with the most
+           specific ones.  I.e. for sr_CS.UTF-8@latin, look through all of
+           sr_CS.UTF-8@latin, sr_CS@latin, sr@latin, sr_CS.UTF-8, sr_CS, sr.
+        */
+        $locale_names = array();
+        if (preg_match("/([a-z]{2,3})"            // language code
+                       ."(_([A-Z]{2}))?"          // country code
+                       ."(\.([-A-Za-z0-9_]))?"    // charset
+                       ."(@([-A-Za-z0-9_]+))?/",  // @ modifier
+                       $locale, $matches)) {
+          list(,$lang,,$country,,$charset,,$modifier) = $matches;
+          if ($modifier) {
+            $locale_names = array("${lang}_$country.$charset@$modifier",
+                                  "${lang}_$country@$modifier",
+                                  "$lang@$modifier");
+          }
+          array_push($locale_names,
+                     "${lang}_$country.$charset", "${lang}_$country", "$lang");
         }
-        else {
-            $input = null;
+        array_push($locale_names, $locale);
+
+        $input = null;
+        foreach ($locale_names as $locale) {
+          $full_path = $bound_path . $locale . "/" . $subpath;
+          if (file_exists($full_path)) {
+            $input = new FileReader($full_path);
+            break;
+          }
         }
-        $text_domains[$domain]->l10n = new gettext_reader($input, $enable_cache);
+
+        $text_domains[$domain]->l10n = new gettext_reader($input,
+                                                          $enable_cache);
     }
     return $text_domains[$domain]->l10n;
 }
