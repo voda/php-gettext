@@ -51,6 +51,12 @@ $LC_CATEGORIES = array('LC_CTYPE', 'LC_NUMERIC', 'LC_TIME', 'LC_COLLATE', 'LC_MO
 $EMULATEGETTEXT = 0;
 $CURRENTLOCALE = '';
 
+/* Class to hold a single domain included in $text_domains. */
+class domain {
+  var $l10n;
+  var $path;
+  var $codeset;
+}
 
 // Utility functions
 
@@ -96,6 +102,10 @@ function _get_reader($domain=null, $category=5, $enable_cache=true) {
           }
         }
 
+        if (!array_key_exists($domain, $text_domains)) {
+          // Initialize an empty domain object.
+          $text_domains[$domain] = new domain();
+        }
         $text_domains[$domain]->l10n = new gettext_reader($input,
                                                           $enable_cache);
     }
