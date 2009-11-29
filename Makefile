@@ -29,3 +29,5 @@ dist:
 	    rm -rf $(PACKAGE); \
 	fi;
 
+clean:
+	rm -f $(PACKAGE).tar.gz
