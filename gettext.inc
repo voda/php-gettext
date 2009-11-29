@@ -172,6 +172,9 @@ function _setlocale($category, $locale) {
             $CURRENTLOCALE = $locale;
             $EMULATEGETTEXT = 1;
         }
+        // Allow locale to be changed on the go for one translation domain.
+        global $text_domains, $default_domain;
+        unset($text_domains[$default_domain]->l10n);
         return $CURRENTLOCALE;
     }
 }
