@@ -1,6 +1,6 @@
 <?php
 /*
-   Copyright (c) 2003, 2005 Danilo Segan <danilo@kvota.net>.
+   Copyright (c) 2003, 2005, 2006, 2009 Danilo Segan <danilo@kvota.net>.
 
    This file is part of PHP-gettext.
 
