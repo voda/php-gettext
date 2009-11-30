@@ -63,10 +63,12 @@ class gettext_reader {
   function readint() {
       if ($this->BYTEORDER == 0) {
         // low endian
-        return array_shift($input=unpack('V', $this->STREAM->read(4)));
+        $input=unpack('V', $this->STREAM->read(4));
+        return array_shift($input);
       } else {
         // big endian
-        return array_shift($input=unpack('N', $this->STREAM->read(4)));
+        $input=unpack('N', $this->STREAM->read(4));
+        return array_shift($input);
       }
     }
 

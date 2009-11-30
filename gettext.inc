@@ -202,6 +202,10 @@ function _bindtextdomain($domain, $path) {
       if ($path[strlen($path)-1] != '/')
         $path .= '/';
     }
+    if (!array_key_exists($domain, $text_domains)) {
+      // Initialize an empty domain object.
+      $text_domains[$domain] = new domain();
+    }
     $text_domains[$domain]->path = $path;
 }
 
