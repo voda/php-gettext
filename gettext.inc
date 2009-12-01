@@ -78,12 +78,12 @@ function _get_reader($domain=null, $category=5, $enable_cache=true) {
            sr_CS.UTF-8@latin, sr_CS@latin, sr@latin, sr_CS.UTF-8, sr_CS, sr.
         */
         $locale_names = array();
-        if (preg_match("/([a-z]{2,3})"            // language code
-                       ."(_([A-Z]{2}))?"          // country code
-                       ."(\.([-A-Za-z0-9_]))?"    // charset
-                       ."(@([-A-Za-z0-9_]+))?/",  // @ modifier
+        if (preg_match("/^([a-z]{2,3})"              // language code
+                       ."(?:_([A-Z]{2}))?"           // country code
+                       ."(?:\.([-A-Za-z0-9_]+))?"     // charset
+                       ."(?:@([-A-Za-z0-9_]+))?$/",  // @ modifier
                        $locale, $matches)) {
-          list(,$lang,,$country,,$charset,,$modifier) = $matches;
+          list(, $lang, $country, $charset, $modifier) = @$matches;
           if ($modifier) {
             $locale_names = array("${lang}_$country.$charset@$modifier",
                                   "${lang}_$country@$modifier",
