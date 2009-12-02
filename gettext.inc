@@ -62,6 +62,34 @@ class domain {
 // Utility functions
 
 /**
+ * Return a list of locales to try for any POSIX-style locale specification.
+ */
+function get_list_of_locales($locale) {
+  /* Figure out all possible locale names and start with the most
+   * specific ones.  I.e. for sr_CS.UTF-8@latin, look through all of
+   * sr_CS.UTF-8@latin, sr_CS@latin, sr@latin, sr_CS.UTF-8, sr_CS, sr.
+   */
+  $locale_names = array();
+  if (preg_match("/^([a-z]{2,3})"              // language code
+                 ."(?:_([A-Z]{2}))?"           // country code
+                 ."(?:\.([-A-Za-z0-9_]+))?"     // charset
+                 ."(?:@([-A-Za-z0-9_]+))?$/",  // @ modifier
+                 $locale, $matches)) {
+    list(, $lang, $country, $charset, $modifier) = @$matches;
+    if ($modifier) {
+      $locale_names = array("${lang}_$country.$charset@$modifier",
+                            "${lang}_$country@$modifier",
+                            "$lang@$modifier");
+    }
+    array_push($locale_names,
+               "${lang}_$country.$charset", "${lang}_$country", "$lang");
+  }
+  if (!in_array($locale, $locale_names))
+    array_push($locale_names, $locale);
+  return $locale_names;
+}
+
+/**
  * Utility function to get a StreamReader for the given text domain.
  */
 function _get_reader($domain=null, $category=5, $enable_cache=true) {
@@ -73,27 +101,8 @@ function _get_reader($domain=null, $category=5, $enable_cache=true) {
         $bound_path = isset($text_domains[$domain]->path) ?
           $text_domains[$domain]->path : './';
         $subpath = $LC_CATEGORIES[$category] ."/$domain.mo";
-        /* Figure out all possible locale names and start with the most
-           specific ones.  I.e. for sr_CS.UTF-8@latin, look through all of
-           sr_CS.UTF-8@latin, sr_CS@latin, sr@latin, sr_CS.UTF-8, sr_CS, sr.
-        */
-        $locale_names = array();
-        if (preg_match("/^([a-z]{2,3})"              // language code
-                       ."(?:_([A-Z]{2}))?"           // country code
-                       ."(?:\.([-A-Za-z0-9_]+))?"     // charset
-                       ."(?:@([-A-Za-z0-9_]+))?$/",  // @ modifier
-                       $locale, $matches)) {
-          list(, $lang, $country, $charset, $modifier) = @$matches;
-          if ($modifier) {
-            $locale_names = array("${lang}_$country.$charset@$modifier",
-                                  "${lang}_$country@$modifier",
-                                  "$lang@$modifier");
-          }
-          array_push($locale_names,
-                     "${lang}_$country.$charset", "${lang}_$country", "$lang");
-        }
-        array_push($locale_names, $locale);
 
+        $locale_names = get_list_of_locales($locale);
         $input = null;
         foreach ($locale_names as $locale) {
           $full_path = $bound_path . $locale . "/" . $subpath;
