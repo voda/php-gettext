@@ -70,22 +70,35 @@ function get_list_of_locales($locale) {
    * sr_CS.UTF-8@latin, sr_CS@latin, sr@latin, sr_CS.UTF-8, sr_CS, sr.
    */
   $locale_names = array();
-  if (preg_match("/^([a-z]{2,3})"              // language code
-                 ."(?:_([A-Z]{2}))?"           // country code
-                 ."(?:\.([-A-Za-z0-9_]+))?"     // charset
-                 ."(?:@([-A-Za-z0-9_]+))?$/",  // @ modifier
-                 $locale, $matches)) {
-    list(, $lang, $country, $charset, $modifier) = @$matches;
-    if ($modifier) {
-      $locale_names = array("${lang}_$country.$charset@$modifier",
-                            "${lang}_$country@$modifier",
-                            "$lang@$modifier");
+  if ($locale) {
+    if (preg_match("/^([a-z]{2,3})"              // language code
+                   ."(?:_([A-Z]{2}))?"           // country code
+                   ."(?:\.([-A-Za-z0-9_]+))?"    // charset
+                   ."(?:@([-A-Za-z0-9_]+))?$/",  // @ modifier
+                   $locale, $matches)) {
+      list(, $lang, $country, $charset, $modifier) = @$matches;
+      if ($modifier) {
+        if ($country) {
+          if ($charset)
+            array_push($locale_names, "${lang}_$country.$charset@$modifier");
+          array_push($locale_names, "${lang}_$country@$modifier");
+        } elseif ($charset)
+            array_push($locale_names, "${lang}.$charset@$modifier");
+        array_push($locale_names, "$lang@$modifier");
+      }
+      if ($country) {
+        if ($charset)
+          array_push($locale_names, "${lang}_$country.$charset");
+        array_push($locale_names, "${lang}_$country");
+      } elseif ($charset)
+          array_push($locale_names, "${lang}.$charset");
+      array_push($locale_names, $lang);
     }
-    array_push($locale_names,
-               "${lang}_$country.$charset", "${lang}_$country", "$lang");
+
+    // If the locale name doesn't match POSIX style, just include it as-is.
+    if (!in_array($locale, $locale_names))
+      array_push($locale_names, $locale);
   }
-  if (!in_array($locale, $locale_names))
-    array_push($locale_names, $locale);
   return $locale_names;
 }
 
