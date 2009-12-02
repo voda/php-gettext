@@ -18,7 +18,10 @@ DIST_FILES = \
 	examples/locale/de_CH/LC_MESSAGES/messages.mo \
 	examples/update
 
-dist:
+check:
+	phpunit --verbose tests
+
+dist: check
 	if [ -d $(PACKAGE) ]; then \
 	    rm -rf $(PACKAGE); \
 	fi; \

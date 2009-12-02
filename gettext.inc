@@ -158,6 +158,16 @@ function _encode($text) {
 // Custom implementation of the standard gettext related functions
 
 /**
+ * Returns passed in $locale, or environment variable $LANG if $locale == ''.
+ */
+function _get_default_locale($locale) {
+  if ($locale == '') // emulate variable support
+    return getenv('LANG');
+  else
+    return $locale;
+}
+
+/**
  * Sets a requested locale, if needed emulates it.
  */
 function _setlocale($category, $locale) {
@@ -170,18 +180,21 @@ function _setlocale($category, $locale) {
             // even if we tried to read locale without setting it first
             return _setlocale($category, $CURRENTLOCALE);
     } else {
-        $ret = 0;
-        if (function_exists('setlocale')) // I don't know if this ever happens ;)
-           $ret = setlocale($category, $locale);
-        if (($ret and $locale == '') or ($ret == $locale)) {
-            $EMULATEGETTEXT = 0;
-            $CURRENTLOCALE = $ret;
-        } else {
-          if ($locale == '') // emulate variable support
-             $CURRENTLOCALE = getenv('LANG');
-        else
-            $CURRENTLOCALE = $locale;
+        if (function_exists('setlocale')) {
+          $ret = setlocale($category, $locale);
+          if (($locale == '' and !$ret) or // failed setting it by env
+              ($locale != '' and $ret != $locale)) { // failed setting it
+            // Failed setting it according to environment.
+            $CURRENTLOCALE = _get_default_locale($locale);
             $EMULATEGETTEXT = 1;
+          } else {
+            $CURRENTLOCALE = $ret;
+            $EMULATEGETTEXT = 0;
+          }
+        } else {
+          // No function setlocale(), emulate it all.
+          $CURRENTLOCALE = _get_default_locale($locale);
+          $EMULATEGETTEXT = 1;
         }
         // Allow locale to be changed on the go for one translation domain.
         global $text_domains, $default_domain;
