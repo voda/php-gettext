@@ -70,13 +70,22 @@ function get_list_of_locales($locale) {
    * sr_CS.UTF-8@latin, sr_CS@latin, sr@latin, sr_CS.UTF-8, sr_CS, sr.
    */
   $locale_names = array();
+  $lang = NULL;
+  $country = NULL;
+  $charset = NULL;
+  $modifier = NULL;
   if ($locale) {
-    if (preg_match("/^([a-z]{2,3})"              // language code
-                   ."(?:_([A-Z]{2}))?"           // country code
-                   ."(?:\.([-A-Za-z0-9_]+))?"    // charset
-                   ."(?:@([-A-Za-z0-9_]+))?$/",  // @ modifier
+    if (preg_match("/^(?P<lang>[a-z]{2,3})"              // language code
+                   ."(?:_(?P<country>[A-Z]{2}))?"           // country code
+                   ."(?:\.(?P<charset>[-A-Za-z0-9_]+))?"    // charset
+                   ."(?:@(?P<modifier>[-A-Za-z0-9_]+))?$/",  // @ modifier
                    $locale, $matches)) {
-      list(, $lang, $country, $charset, $modifier) = @$matches;
+
+      if (isset($matches["lang"])) $lang = $matches["lang"];
+      if (isset($matches["country"])) $country = $matches["country"];
+      if (isset($matches["charset"])) $charset = $matches["charset"];
+      if (isset($matches["modifier"])) $modifier = $matches["modifier"];
+
       if ($modifier) {
         if ($country) {
           if ($charset)
