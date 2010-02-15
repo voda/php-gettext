@@ -301,6 +301,20 @@ class gettext_reader {
   }
 
   /**
+   * Parse full PO header and extract only plural forms line.
+   *
+   * @access private
+   * @return string verbatim plural form header field
+   */
+  function extract_plural_forms_header_from_po_header($header) {
+    if (preg_match("/(^|\n)plural-forms: ([^\n]*)\n/i", $header, $regs))
+      $expr = $regs[2];
+    else
+      $expr = "nplurals=2; plural=n == 1 ? 0 : 1;";
+    return $expr;
+  }
+
+  /**
    * Get possible plural forms from MO header
    *
    * @access private
@@ -318,11 +332,7 @@ class gettext_reader {
       } else {
         $header = $this->get_translation_string(0);
       }
-      if (eregi("plural-forms: ([^\n]*)\n", $header, $regs))
-        $expr = $regs[1];
-      else
-        $expr = "nplurals=2; plural=n == 1 ? 0 : 1;";
-
+      $expr = extract_plural_forms_header_from_po_header($header);
       $this->pluralheader = $this->sanitize_plural_expression($expr);
     }
     return $this->pluralheader;
