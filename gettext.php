@@ -332,7 +332,7 @@ class gettext_reader {
       } else {
         $header = $this->get_translation_string(0);
       }
-      $expr = extract_plural_forms_header_from_po_header($header);
+      $expr = $this->extract_plural_forms_header_from_po_header($header);
       $this->pluralheader = $this->sanitize_plural_expression($expr);
     }
     return $this->pluralheader;
