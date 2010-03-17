@@ -21,7 +21,7 @@
 
 */
 
-error_reporting(E_STRICT);
+error_reporting(E_ALL | E_STRICT);
 
 // define constants
 define('PROJECT_DIR', realpath('./'));
