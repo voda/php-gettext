@@ -384,7 +384,7 @@ class gettext_reader {
     $select = $this->select_string($number);
 
     // this should contains all strings separated by NULLs
-    $key = $single.chr(0).$plural;
+    $key = $single . chr(0) . $plural;
 
 
     if ($this->enable_cache) {
@@ -407,6 +407,15 @@ class gettext_reader {
     }
   }
 
+  function pgettext($context, $msgid) {
+    $key = $context . chr(4) . $msgid;
+    return $this->translate($key);
+  }
+
+  function npgettext($context, $singular, $plural, $number) {
+    $singular = $context . chr(4) . $singular;
+    return $this->ngettext($singular, $plural, $number);
+  }
 }
 
 ?>
