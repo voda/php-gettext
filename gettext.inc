@@ -184,8 +184,6 @@ function _encode($text) {
 }
 
 
-
-
 // Custom implementation of the standard gettext related functions
 
 /**
@@ -275,7 +273,6 @@ function _textdomain($domain) {
  */
 function _gettext($msgid) {
     $l10n = _get_reader();
-    //return $l10n->translate($msgid);
     return _encode($l10n->translate($msgid));
 }
 /**
@@ -289,7 +286,6 @@ function __($msgid) {
  */
 function _ngettext($single, $plural, $number) {
     $l10n = _get_reader();
-    //return $l10n->ngettext($single, $plural, $number);
     return _encode($l10n->ngettext($single, $plural, $number));
 }
 
@@ -298,7 +294,6 @@ function _ngettext($single, $plural, $number) {
  */
 function _dgettext($domain, $msgid) {
     $l10n = _get_reader($domain);
-    //return $l10n->translate($msgid);
     return _encode($l10n->translate($msgid));
 }
 /**
@@ -306,7 +301,6 @@ function _dgettext($domain, $msgid) {
  */
 function _dngettext($domain, $single, $plural, $number) {
     $l10n = _get_reader($domain);
-    //return $l10n->ngettext($single, $plural, $number);
     return _encode($l10n->ngettext($single, $plural, $number));
 }
 
@@ -315,7 +309,6 @@ function _dngettext($domain, $single, $plural, $number) {
  */
 function _dcgettext($domain, $msgid, $category) {
     $l10n = _get_reader($domain, $category);
-    //return $l10n->translate($msgid);
     return _encode($l10n->translate($msgid));
 }
 /**
@@ -323,11 +316,8 @@ function _dcgettext($domain, $msgid, $category) {
  */
 function _dcngettext($domain, $single, $plural, $number, $category) {
     $l10n = _get_reader($domain, $category);
-    //return $l10n->ngettext($single, $plural, $number);
     return _encode($l10n->ngettext($single, $plural, $number));
 }
-
-
 
 // Wrappers to use if the standard gettext functions are available, but the current locale is not supported by the system.
 // Use the standard impl if the current locale is supported, use the custom impl otherwise.
