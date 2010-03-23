@@ -134,7 +134,7 @@ class gettext_reader {
    * Loads the translation tables from the MO file into the cache
    * If caching is enabled, also loads all strings into a cache
    * to speed up translation lookups
-   * 
+   *
    * @access private
    */
   function load_tables() {
@@ -144,10 +144,14 @@ class gettext_reader {
       return;
 
     /* get original and translations tables */
-    $this->STREAM->seekto($this->originals);
-    $this->table_originals = $this->readintarray($this->total * 2);
-    $this->STREAM->seekto($this->translations);
-    $this->table_translations = $this->readintarray($this->total * 2);
+    if (!is_array($this->table_originals)) {
+      $this->STREAM->seekto($this->originals);
+      $this->table_originals = $this->readintarray($this->total * 2);
+    }
+    if (!is_array($this->table_translations)) {
+      $this->STREAM->seekto($this->translations);
+      $this->table_translations = $this->readintarray($this->total * 2);
+    }
 
     if ($this->enable_cache) {
       $this->cache_translations = array ();
