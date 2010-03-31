@@ -6,6 +6,7 @@ class LocaleTest extends PHPUnit_Framework_TestCase
 {
   public function test_setlocale()
   {
+    putenv("LC_ALL=");
     // _setlocale defaults to a locale name from environment variable LANG.
     putenv("LANG=sr_RS");
     $this->assertEquals('sr_RS', _setlocale(LC_MESSAGES, 0));
