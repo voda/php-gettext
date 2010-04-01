@@ -419,7 +419,13 @@ class gettext_reader {
 
   function npgettext($context, $singular, $plural, $number) {
     $singular = $context . chr(4) . $singular;
-    return $this->ngettext($singular, $plural, $number);
+    $ret = $this->ngettext($singular, $plural, $number);
+    if (strpos($ret, "\004") !== FALSE) {
+      return $singular;
+    } else {
+      return $ret;
+    }
+
   }
 }
 
