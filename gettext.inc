@@ -229,7 +229,12 @@ function _setlocale($category, $locale) {
         }
         // Allow locale to be changed on the go for one translation domain.
         global $text_domains, $default_domain;
-        unset($text_domains[$default_domain]->l10n);
+        if (array_key_exists($default_domain, $text_domains)) {
+            unset($text_domains[$default_domain]->l10n);
+        } else {
+            throw new Exception(
+              "Default domain was not initialized with _textdomain() call.");
+        }
         return $CURRENTLOCALE;
     }
 }
