@@ -34,5 +34,8 @@ dist: check
 	    rm -rf $(PACKAGE); \
 	fi;
 
+sign: dist
+	gpg --armor --sign --detach-sig $(PACKAGE).tar.gz
+
 clean:
-	rm -f $(PACKAGE).tar.gz
+	rm -f $(PACKAGE).tar.gz $(PACKAGE).tar.gz.asc
