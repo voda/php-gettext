@@ -14,6 +14,7 @@ class LocaleTest extends PHPUnit_Framework_TestCase
 
   public function test_setlocale_system()
   {
+    putenv("LC_ALL=");
     // For an existing locale, it never needs emulation.
     putenv("LANG=C");
     _setlocale(LC_MESSAGES, "");
@@ -22,6 +23,7 @@ class LocaleTest extends PHPUnit_Framework_TestCase
 
   public function test_setlocale_emulation()
   {
+    putenv("LC_ALL=");
     // If we set it to a non-existent locale, it still works, but uses
     // emulation.
     _setlocale(LC_MESSAGES, "xxx_XXX");
