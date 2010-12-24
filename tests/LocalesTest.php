@@ -10,12 +10,18 @@ class LocaleTest extends PHPUnit_Framework_TestCase
     // _setlocale defaults to a locale name from environment variable LANG.
     putenv("LANG=sr_RS");
     $this->assertEquals('sr_RS', _setlocale(LC_MESSAGES, 0));
+  }
 
+  public function test_setlocale_system()
+  {
     // For an existing locale, it never needs emulation.
     putenv("LANG=C");
     _setlocale(LC_MESSAGES, "");
     $this->assertEquals(0, locale_emulation());
+  }
 
+  public function test_setlocale_emulation()
+  {
     // If we set it to a non-existent locale, it still works, but uses
     // emulation.
     _setlocale(LC_MESSAGES, "xxx_XXX");
