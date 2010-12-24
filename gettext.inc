@@ -32,7 +32,6 @@ LC_MESSAGES     5
 LC_ALL          6
 */
 
-
 // LC_MESSAGES is not available if php-gettext is not loaded
 // while the other constants are already available from session extension.
 if (!defined('LC_MESSAGES')) {
@@ -453,26 +452,27 @@ function T_dcpgettext($domain, $context, $msgid, $category) {
       return _dcpgettext($domain, $context, $msgid, $category);
 }
 
-function T_npgettext($context, $singular, $plural) {
+function T_npgettext($context, $singular, $plural, $number) {
     if (_check_locale_and_function('npgettext'))
-        return npgettext($context, $single, $plural, $number);
+        return npgettext($context, $singular, $plural, $number);
     else
-        return _npgettext($context, $single, $plural, $number);
+        return _npgettext($context, $singular, $plural, $number);
 }
 
-function T_dnpgettext($domain, $context, $singular, $plural) {
+function T_dnpgettext($domain, $context, $singular, $plural, $number) {
   if (_check_locale_and_function('dnpgettext'))
-      return dnpgettext($domain, $context, $single, $plural, $number);
+      return dnpgettext($domain, $context, $singular, $plural, $number);
   else
-      return _dnpgettext($domain, $context, $single, $plural, $number);
+      return _dnpgettext($domain, $context, $singular, $plural, $number);
 }
 
-function T_dcnpgettext($domain, $context, $singular, $plural, $category) {
+function T_dcnpgettext($domain, $context, $singular, $plural,
+                       $number, $category) {
     if (_check_locale_and_function('dcnpgettext'))
-        return dcnpgettext($domain, $context, $single,
+        return dcnpgettext($domain, $context, $singular,
                            $plural, $number, $category);
     else
-        return _dcnpgettext($domain, $context, $single,
+        return _dcnpgettext($domain, $context, $singular,
                             $plural, $number, $category);
 }
 
