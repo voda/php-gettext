@@ -231,9 +231,6 @@ function _setlocale($category, $locale) {
         global $text_domains, $default_domain;
         if (array_key_exists($default_domain, $text_domains)) {
             unset($text_domains[$default_domain]->l10n);
-        } else {
-            throw new Exception(
-              "Default domain was not initialized with _textdomain() call.");
         }
         return $CURRENTLOCALE;
     }
